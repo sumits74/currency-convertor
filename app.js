@@ -1,4 +1,4 @@
-const BASE_URL= "https://latest.currency-api.pages.dev/v1/currencies";
+const BASE_URL= "https://2024-03-06.currency-api.pages.dev/v1/currencies/eur";
 
 const dropdowns = document.querySelectorAll(".dropdown select");
 const btn = document.querySelector("form button");
@@ -24,17 +24,7 @@ for (let select of dropdowns){
     });
 }
 
-const updateFlag = (element) => {
-    let currCode = element.value;
-    let countryCode = countryList[currCode];
-    let newSrc = `https://flagsapi.com/${countryCode}/flat/64.png`;
-    let img = element.parentElement.querySelector("img");
-    img.src = newSrc;
-}
-
-
-btn.addEventListener("click", async(evt) => {
-    evt.preventDefault();
+const updateExchangeRate = async () => {
     let amount = document.querySelector(".amount input");
     let amtVal = amount.value;
     if (amtVal === "" || amtVal < 1){
@@ -50,4 +40,23 @@ btn.addEventListener("click", async(evt) => {
     let finalAmount = amtVal * rate;
     msg.innerText = `${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`
 
+}
+
+const updateFlag = (element) => {
+    let currCode = element.value;
+    let countryCode = countryList[currCode];
+    let newSrc = `https://flagsapi.com/${countryCode}/flat/64.png`;
+    let img = element.parentElement.querySelector("img");
+    img.src = newSrc;
+}
+
+
+btn.addEventListener("click", (evt) => {
+    evt.preventDefault();
+    updateExchangeRate();
 });
+
+window.addEventListener("load", () => {
+    updateExchangeRate();
+})
+
